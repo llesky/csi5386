@@ -32,7 +32,7 @@ we use SpaCy to tokenize each line of microblog2011.txt. Each url is treated as 
 
 2 [a] [lot] [of] [people] [always] [make] [fun] [about] [the] [end] [of] [the] [world] [but] [the] [question] [is] [..] ["ARE] [U] [READY] [FOR] [IT] [?] [..] 
 
-3 [ReThink] [Group] [positive] [in] [outlook] [:] [Technology] [staffing] [specialist] [the] [ReThink] [Group] [expects] [revenues] [to] [be] [¡°] [marg] [...] 
+3 [ReThink] [Group] [positive] [in] [outlook] [:] [Technology] [staffing] [specialist] [the] [ReThink] [Group] [expects] [revenues] [to] [be] [Â¡Â°] [marg] [...] 
 [http://bit.ly/hFjtmY] 
 
 4 ['] [Zombie] ['] [fund] [manager] [Phoenix] [appoints] [new] [CEO] [:] [Phoenix] [buys] [up] [funds] [that] [have] [been] [closed] [to] [new] [business] [and] [...] [http://bit.ly/dXrlH5] 
@@ -51,7 +51,7 @@ we use SpaCy to tokenize each line of microblog2011.txt. Each url is treated as 
 [newsid_9389000/9389467.stm] [...]
 
 10 [Manchester] [City] [Council] [details] [saving] [cuts] [plan] [:] 
-[http://bbc.in/fYPYPC] [...] [Depressing] [.] [Apparently] [we] [¡¯re] [4th] [most] [deprived] [&] [top] [5] [hardest] [hit] 
+[http://bbc.in/fYPYPC] [...] [Depressing] [.] [Apparently] [we] [Â¡Â¯re] [4th] [most] [deprived] [&] [top] [5] [hardest] [hit] 
 
 11 [http://bit.ly/e0ujdP] [,] [if] [you] [are] [interested] [in] [professional] [global] [translation] [services] 
 
@@ -155,7 +155,7 @@ list top 100
 64 ('world', 1412)
 65 ('..', 1411)
 66 ('was', 1405)
-67 ('¡­', 1389)
+67 ('Â¡Â­', 1389)
 68 ('so', 1388)
 69 ('an', 1372)
 70 ('jan25', 1337)
@@ -510,16 +510,12 @@ listed top 100
 99 (('egypt', 'museum'), 47)
 100 (('detroit', 'police'), 47)	
 \end{spverbatim}
-
 \section{Part 2: Evaluation word embeddings}
-In this section, we evaluate 8 different word embedding methods over 7 similarity task datasets and 4 analogy questions task datasets. We consider pre-trained  \href{https://github.com/eleriaedmaa/embeddings}{CBOW},      \href{https://code.google.com/p/word2vec/}{Skip-grams}, \href{https://nlp.stanford.edu/projects/glove/}{GloVe}, \href{http://ofey.me/projects/wordrep/}{PDC}, \href{http://ofey.me/projects/wordrep/}{HDC}, \href{https://github.com/alexandres/lexvec}{LexVec}, \href{https://github.com/commonsense/ConceptNet Numberbatch-numberbatch}{ConceptNet Numberbatch Numberbatch}, \href{https://fasttext.cc/docs/en/english-vectors.html}{FastText}. We use similarity test data set MTurk, MEN, WS353, Rubenstein and Goodenough, Rare Words, SimLex999, TR9856. We also use analogy questions task datasets MSR\_WordRep, Google\_analogy, MSR, SEMEVAL\_2012\_Task 2.
-
+In this section, we evaluate 8 different word embedding methods over 7 similarity task datasets and 4 analogy questions task datasets. We consider pre-trained  \href{https://github.com/eleriaedmaa/embeddings}{CBOW},      \href{https://code.google.com/p/word2vec/}{Skip-grams}, \href{https://nlp.stanford.edu/projects/glove/}{GloVe}, \href{http://ofey.me/projects/wordrep/}{PDC}, \href{http://ofey.me/projects/wordrep/}{HDC}, \href{https://github.com/alexandres/lexvec}{LexVec}, \href{https://github.com/commonsense/ConceptNet Numberbatch-numberbatch}{ConceptNet Numberbatch}, \href{https://fasttext.cc/docs/en/english-vectors.html}{FastText}. We use similarity test data set MTurk, MEN, WS353, Rubenstein and Goodenough, Rare Words, SimLex999, TR9856. We also use analogy questions task datasets MSR\_WordRep, Google\_analogy, MSR, SEMEVAL\_2012\_Task 2.
 \\ \hspace*{\fill} \\
 \noindent In the experiment, there are two different kind of tasks: semantic similarity test and Word analogy. In word semantic similarity test, given a pair of words, the distance between the two word vectors is calculated and the distance is compared with a human rated similarity. The goodness of fit is calculated by Spearman correlation. The word analogy test, on the other hand, is given a combination of word (a, a*, b), predicting the word 'b*' that has the similar relationship to 'b' as the relation of 'a*' and 'a'. We use a SimpleAnalogySolver given by \href{https://github.com/kudkudak/word-embeddings-benchmarks/blob/master/web/analogy.py}{[word-embeddings-benchmarks]} to predict the word b* for the task, and calculate the accuracy of the prediction. In both of the tasks, we calculate a score of the task, either correlation or accuracy. The higher the score, the better the embedding model is.
-
     \subsection{CBOW evaluation}
  CBOW is part of the unsupervised Word2Vec proposed by Google. The intuition behind CBOW(Continuous Bag of Words) is using the context to predict a target word. Given the context of a word as the input, it predict the word using a paramerized neural network without activation function. We use CBOW pretrained with embedding dimension 300, window size 15, minimum count 10, and iterations 20, where window size specify the size of the context, and minimum count specify the minimum times a word needs to be seen. The model is trained on \href{https://doi.org/10.15155/1-00-0000-0000-0000-0012el}{etTenTen: Corpus of the Estonian Web}. The result of evaluation on similarity test and analogy task is given in table 1 and table 2.
-
 \begin{table*}[ht!]
 \centering
 \resizebox{0.6\textwidth}{!}{%
@@ -583,7 +579,6 @@ CBOW & 0.19 & 0.401811 & 0.711875 & 0.20406 & 0.376937 \\ \hline
 \end{table}
 \subsection{GloVe evaluation}
 Unlike Word2vec, GloVe conbines both local context relation and global concurrence statistics by calculate a co-occurrence probability matrix. We use pretrained GloVe from \href{https://nlp.stanford.edu/projects/glove/}{GloVe}. We also use 300 dimensional embedding, the word embedding was trained on Wikipedia 2014 + Gigaword, and contains 400K words. The result of evaluation on similarity test and analogy task is given in table 5 and table 6.
-
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -617,7 +612,6 @@ CBOW & 0.22836 & 0.717356 & 0.61425 & 0.163963 & 0.430982 \\ \hline
 \subsection{PDC evaluation}
 PDC and HDC are two distributional word embedding models that take both syntagmatic (words that co-occur
 in the same context) and paradigmatic relation(words that occurs with similar contexts, but not necessarily the same text) into consideration. They both learned from information of both text region and surrounding words. More specifically, PDC has a CBOW like structure, but adding an extra document branch to incorporate text region information. In the experiment, we use pretrained PDC and HDC from  \href{http://ofey.me/projects/wordrep/}{http://ofey.me/projects/wordrep}. The model was trained on Wikipedia 2010, and is 300 dimensional. The result of evaluation on similarity test and analogy task is given in table 7 and table 8.
-
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -650,7 +644,6 @@ CBOW & 0.252121 & 0.747595 & 0.596375 & 0.174074 & 0.442541 \\ \hline
 \end{table}
 \subsection{HDC evaluation}
 Similar to PDC, HDC considers both syntagmatic and paradigmatic relations, but it has a structure that is similar to Skip-gram. The model was trained on Wikipedia 2010, and is 300 dimensional. The result of evaluation on similarity test and analogy task is given in table 9 and table 10.
-
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -667,7 +660,6 @@ RW & SIMLEX999 & TR9856 & mean \\ \hline
 \caption{Similarity result of HDC}
 \label{tab:my-table}
 \end{table}
-
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -700,7 +692,6 @@ RW & SIMLEX999 & TR9856 & mean \\ \hline
 \caption{Similarity result of LexVec}
 \label{tab:my-table}
 \end{table}
-
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -716,7 +707,7 @@ CBOW & 0.252822 & 0.728305 & 0.57375 & 0.198185 & 0.438265 \\ \hline
 \label{tab:my-table}
 \end{table}
 \subsection{ConceptNet Numberbatch evaluation}
-ConceptNet is a knowledge graph that connects word and phrases with weighted edges. It is originally used to parse corpus, but also represents links between knowledges, which is ideal to word embedding. The ConceptNet Numberbatch use a generalization of the ¡°retrofitting¡± method to combine the ConceptNet and distributuional semantics. Numberbatch is built using an ensemble that combines data from ConceptNet, word2vec, GloVe, and OpenSubtitles 2016. Retrofitting infers new vectors with the objective of being close to their original values and also close to their neighbors in the graph with edges E. We use pretrained model from \href{https://github.com/commonsense/conceptnet-numberbatch}{ConceptNet Numberbatch}, the model is 300 dimensional. The result of evaluation on similarity test and analogy task is given in table 13 and table 14.
+ConceptNet is a knowledge graph that connects word and phrases with weighted edges. It is originally used to parse corpus, but also represents links between knowledges, which is ideal to word embedding. The ConceptNet Numberbatch use a generalization of the retrofitting method to combine the ConceptNet and distributuional semantics. Numberbatch is built using an ensemble that combines data from ConceptNet, word2vec, GloVe, and OpenSubtitles 2016. Retrofitting infers new vectors with the objective of being close to their original values and also close to their neighbors in the graph with edges E. We use pretrained model from \href{https://github.com/commonsense/conceptnet-numberbatch}{ConceptNet Numberbatch}, the model is 300 dimensional. The result of evaluation on similarity test and analogy task is given in table 13 and table 14.
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -781,7 +772,6 @@ CBOW & 0.274761 & 0.592509 & 0.813 & 0.219978 & 0.475062 \\ \hline
 \end{table}
 \subsection{Overall comparison}
 In this part, we give a table of all models and their results on all the evaluation datasets. We also calculate the average score over all the datasets for each of the model. Table 17 gives the results.
-
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[ht!]
@@ -812,28 +802,7 @@ FastText & 0.157 & \textbf{0.275} & 0.593 & \textbf{0.813} & 0.220 & \textbf{0.5
 \caption{Comparison of models}
 \label{tab:my-table}
 \end{table}
-
 \\ \hspace*{\fill} \\
 \noindent
 The result shows that comparing to baseline models like Word2Vec and GloVe, novel and latter methods like ConceptNet Numberbatch and FastText got higher score. Another observation is that while CBOW perform the worst in all task, its performance on words analogy task is far more worse than similarity task. Finally, although PDC and HDC has similar structure to Word2Vec, where PDC has similar structure to CBOW, their score are close, and better than Word2Vec methods.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \end{document}
