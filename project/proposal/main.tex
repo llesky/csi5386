@@ -1,0 +1,190 @@
+% Created by Bonita Graham
+% Last update: February 2019 By Kestutis Bendinskas
+
+% Authors: 
+% Please do not make changes to the preamble until after the solid line of %s.
+
+\documentclass[10pt]{article}
+\usepackage[explicit]{titlesec}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{hyphenat}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\RaggedRight
+
+% These commands change the font. If you do not have Garamond on your computer, you will need to install it.
+%\usepackage{garamondx}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amsthm}
+\usepackage{graphicx}
+
+% This adjusts the underline to be in keeping with word processors.
+\usepackage{soul}
+\setul{.6pt}{.4pt}
+
+
+% The following sets margins to 1 in. on top and bottom and .75 in on left and right, and remove page numbers.
+\usepackage{geometry}
+\geometry{vmargin={1in,1in}, hmargin={.75in, .75in}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\pagenumbering{gobble}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+% These Commands create the label style for tables, figures and equations.
+\usepackage[labelfont={footnotesize,bf} , textfont=footnotesize]{caption}
+\captionsetup{labelformat=simple, labelsep=period}
+\newcommand\num{\addtocounter{equation}{1}\tag{\theequation}}
+\renewcommand{\theequation}{\arabic{equation}}
+\makeatletter
+\renewcommand\tagform@[1]{\maketag@@@ {\ignorespaces {\footnotesize{\textbf{Equation}}} #1.\unskip \@@italiccorr }}
+\makeatother
+\setlength{\intextsep}{10pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-10pt}
+
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\floatpagefraction}{0.90}
+
+% These commands set the paragraph and line spacing
+\titleformat{\section}
+  {\normalfont}{\thesection}{1em}{\MakeUppercase{\textbf{#1}}}
+\titlespacing\section{0pt}{0pt}{-10pt}
+\titleformat{\subsection}
+  {\normalfont}{\thesubsection}{1em}{\textit{#1}}
+\titlespacing\subsection{0pt}{0pt}{-8pt}
+\renewcommand{\baselinestretch}{1.15}
+
+% This designs the title display style for the maketitle command
+\makeatletter
+\newcommand\sixteen{\@setfontsize\sixteen{16pt}{6}}
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+\vspace{-.375in}
+\sixteen\bfseries \@title
+\medskip
+\end{flushleft}
+\textit{\@author}
+\egroup}
+\makeatother
+
+% This styles the bibliography and citations.
+%\usepackage[biblabel]{cite}
+\usepackage[sort&compress]{natbib}
+\setlength\bibindent{2em}
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}\hfill}
+\makeatother
+\renewcommand{\citenumfont}[1]{\textbf{#1}}
+\bibpunct{}{}{,~}{s}{,}{,}
+\setlength{\bibsep}{0pt plus 0.3ex}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Authors: Add additional packages and new commands here.  
+% Limit your use of new commands and special formatting.
+
+% Place your title below. Use Title Capitalization.
+\title{Implementing RL Based Representation Learning on Hate Speech and Abusive Detection Datasets: Comparison and/or Extension}
+
+% Add author information below. Communicating author is indicated by an asterisk, the affiliation is shown by superscripted lower case letter if several affiliations need to be noted.
+\author{Wei Li 300113733, Libo Long 300151908}
+
+\pagestyle{empty}
+\begin{document}
+% Makes the title and author information appear.
+
+\vspace*{.01 in}
+\maketitle
+\vspace{.12 in}
+
+
+
+% Abstracts are required.
+\section*{1 Introduction}
+A foundation problem in many natural language process tasks is learning good representation to texts (i.e. word embedding, sentence embedding, document embeddings). In recent representation learning researches, a series of neural network methods have been proposed. The mainstream architecture can be classified roughly into 4 classes: 1) bag-of-words method which does not consider the order of words, 2) convolution network that learns representation through convolution and pooling layers, 3) recurrent network that considers the word orders and 4) structured RNN like tree-LSTM\cite{tai2015improved}(Tai et al., 2015) which also considers the structure of the context from pre-defined parsing. Some tricks such as attention and transformer have also been proposed to enhance the neural model. 
+
+Tianyang Zhang and Minlie Huang proposed a novel method\cite{AAAI1816537} (Zhang et al. 2018) that uses Reinforcement Learning method to explore and identify task-related structures automatically. In this project, we consider the downstream classification task in Hate Speech and Abusive Language datasets, and implement the two models proposed in the paper (a.k.a. ID-LSTM and HS-LSTM), comparing them with mainstream baseline models, and hopefully exploring the properties of the model to extend the model and increase its performance.
+
+
+
+
+
+\vspace{.12 in}
+
+% Start the main part of the manuscript here.
+% Comment out section headings if inappropriate to your discipline.
+% If you add additional section or subsection headings, use an asterisk * to avoid numbering. 
+
+\section*{2 A Brief Summary of Methods}
+\subsection*{2.1 Classification Task}
+In natural language processing, classification task is to assign tags to texts given information extracted from its content, either semantic or not. Text classification is one of the fundamental tasks in NLP and is widely used in many applications such as sentimental analysis, topic classification, spam detection, author classification, etc.  
+
+Chronologically, 3 groups of methods have been used in text classification: rule-based approaches, machine learning approaches, and deep learning approaches.
+Rule-based approaches use a set of rules summarized from linguistic experiences and researches. These rules are handcrafted for each specific task and dataset and required a lot of domain knowledge, which render the approach less economical comparing to latter approaches.
+
+A more recent approach, Machine learning systems trying to extract features from the unstructured text data and apply machine learning to learn a distribute that map the feature-represent to tags. One of the most commonly used feature extraction methods is bag-of-words, which represent the text by counting the frequency of words appearing in a corpus.
+
+Recent years, deep learning architectures achieved state of art results in text classification. In deep learning, representation of text can be learned automatically and effectively from corpora, and the result can be generalized well into different tasks.
+
+\subsection*{2.2 Neural representation learning}
+
+Text classification using neural networks relies on learning vector representation of text. We give a brief summary to some of the widest used neural representation architectures.
+
+a.	CNN\cite{DBLP:conf/emnlp/Kim14}\cite{DBLP:conf/acl/KalchbrennerGB14}(Kim 2014; Kalchbrenner, Grefenstette, and Blunsom 2014;): CNN models use the same architectures as image processing tasks over texts, a potential problem of CNN for text is big ‘channel’ size.
+
+b.	RNN \cite{DBLP:journals/neco/HochreiterS97}\cite{DBLP:journals/corr/ChungGCB14}(Hochreiter and Schmidhuber 1997; Chung et al. 2014): RNN can treat inputs as a sequence, and assign weights to the previous state in a sequence, which make it a powerful method for text, string and sequential data classification. Vanilla RNN suffers from vanishing gradient problem, which is fixed to some extent by gated models like LSTM or GRU. 
+
+c.	RCNN \cite{DBLP:conf/cvpr/GirshickDDM14}(R. Girshick et al., 2014): The idea of RCNN is combine the advantage of RNN and CNN by capturing contextual information with the recurrent structure and constructing the text representation with CNN. 
+
+d.	Hierarchical Attention Networks\cite{DBLP:conf/naacl/YangYDHSH16}(Yang et al. 2016):  this method has a hierarchical structure that mirrors the hierarchical structure of documents; The member of the hierarchy can be words, sentences and documents. Moreover, each hierarchy has its attention.
+
+\subsection*{2.3 ID-LSTM and HS-LSTM }
+ID-LSTM and HS-LSTM are two reinforcement learning based representation learning models. Unlike the architecture mentioned above, the two models can use the information of text structure (POS, for example). While other structured representation models like tree-RNN used pre-specified parsing trees, ID-LSTM and HS-LSTM use reinforcement learning to learning the structure from data.
+
+\section*{3 Project Description}
+
+\subsection*{3.1 Hate Speech Detection}
+Hate speech detection is an application of text classification and is deployed on many social media platforms. The objective of hate speech detection is identifying abusive languages that target specific individuals or groups. The kind of hate speech can be either about race, gender, sexuality cyberbully. One observation is made in this area that there exist some bias to certain groups of user, and thus models tend to generate false-positive results\cite{DBLP:journals/corr/abs-1905-12516}(Davidson et al., 2019). For example, it is innocuous in the context of the homosexual community to assert “I am a gay man”, but when the statement is evaluated in a big data set together with comments from other groups, it gets high toxicity score.
+\subsection*{3.2 Data Set}
+In the project, we focus on Twitter data. Twitter comments are short and are rich in hate speeches. Now, we identified 5 different hate speech datasets, all are labeled by humans. Some of the data only distinguish whether a comment contains hate or offensive content, while others specify the kind of offense like racism or sexism. The data sets are:
+\begin{itemize}
+  \item \cite{}Waseem and Hovy (2016): 130k tweets, 3 classes (racism, sexism, neither)
+  \item \cite{}Waseem (2016): 7k tweets, 4 classes (racism, sexism, both, neither)
+  \item \cite{}Davidson et al. (2017): 24k tweets, 3 classes (hate, offensive, neither)
+  \item \cite{}Golbeck et al. (2017): 20k tweets, 2 classes (harass, non)
+  \item \cite{}Founta et al. (2018): 92k tweets, 4 classes (hate, abusive, spam, neither)
+\end{itemize}
+
+Currently, we have not decided which data is to be used in our project. Given the limit of time, we want to focus on one data set and train models that obtain fine-grained results instead of comparing models that trained roughly in different data sets.
+
+\subsection*{3.3 Methodology}
+1) Preprocessing
+\begin{itemize}
+  \item Word embedding: Using pre-trained word embedding in twitter dataset(GloVe, Word2Vec, etc). Ideally, good pre-trained word embedding in Twitter corpus can take good care of slangs, abbreviations and emojis that is rarely occurred in formal context. We want to fix the choice of word embedding to one.
+  \item Sentence preprocessing: We tokenize sentences and eliminate unnecessary tokens. Then we padding all sentence to a fix appropriate length while eliminating data that exceed that length.
+\end{itemize}
+2) Models
+In this phase, we consider the following model architectures: CNN, LSTM, Bi-LSTM, RCNN, Hierarchical Attention Networks, RL-based(ID-LSTM, HS-LSTM)
+
+3) Evaluation
+In this text classification problem, we consider three evaluation metrics: 
+Accuracy: the performance of each model in general sense
+Precision: taking the false positive problem in hate speech detection task into consideration
+F1 score: a balanced evaluation that takes both bias and performance into account
+The number of classes in datasets listed above range from 2 classes to 4 classes. When the number of classes exceeds 2, we calculate scores for each of the classes.
+
+\subsection*{3.4 Extent the State of Art}
+We hope to understand and explore the underlining structure of reinforcement learning through the experiment and extend its performance. We also want to find out whether RL-based models’ ability to explore sentence structure unsupervisedly can attend to the bias problem in hate speech detection problem.
+
+\bibliographystyle{unsrt}
+\bibliography{ref.bib}
+\end{document}
+
