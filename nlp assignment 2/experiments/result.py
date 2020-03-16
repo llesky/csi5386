@@ -20,9 +20,25 @@ total = sum(sum(confusion_matrix))
 ratio = correct/total
 print("accurcy for task 1:",ratio)
 
+#label_num = [0 if i=="ENTAILMENT" else i=="NEUTRAL" for i in labels['relatedness_score']]
+#print(label_num)
+precision_score = sklearn.metrics.precision_score(labels['entailment_judgment'],results['entailment_judgment'],average=None)
+print("precision_score:",precision_score)
+
+recall_score = sklearn.metrics.recall_score(labels['entailment_judgment'],results['entailment_judgment'],average=None)
+print("recall_score:",recall_score)
+
+f1_score = sklearn.metrics.f1_score(labels['entailment_judgment'],results['entailment_judgment'],average=None)
+print("recall_score:",f1_score)
+
+'''
 pearsonr = scipy.stats.pearsonr(labels['relatedness_score'],results['relatedness_score'])[0]
 print('Pearson correlation: ' + str(pearsonr))
 
 mse = sklearn.metrics.mean_squared_error(y_true=labels['relatedness_score'],y_pred=results['relatedness_score'])
 print('Mean squre error: '+str(mse))
+
+spearmanr = scipy.stats.spearmanr(labels['relatedness_score'],results['relatedness_score'])
+print(str(spearmanr))'''
+
 
